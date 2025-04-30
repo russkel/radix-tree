@@ -32,7 +32,7 @@ def test_radix_tree_01():
     my_key = 'A'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Insert first node
     print("*"*10)
@@ -40,7 +40,7 @@ def test_radix_tree_01():
     my_key = 'A'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Insert second node
     print("*"*10)
@@ -48,8 +48,8 @@ def test_radix_tree_01():
     my_key = 'AB'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
     my_tree.dump()
     # Insert third node
     print("*"*10)
@@ -57,9 +57,9 @@ def test_radix_tree_01():
     my_key = 'X'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
     my_tree.dump()
     # Delete third node
     print("*"*10)
@@ -68,8 +68,8 @@ def test_radix_tree_01():
     print("%d. Delete node '%s'" %(i,my_key))
     assert my_tree.delete_node(my_key) == True
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
     my_tree.dump()
     # Delete second node
     print("*"*10)
@@ -78,7 +78,7 @@ def test_radix_tree_01():
     print("%d. Delete node '%s'" %(i,my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node('A')._data == 'A'
+    assert my_tree.get_node('A').data == 'A'
     my_tree.dump()
     # Delete First node
     print("*"*10)
@@ -99,7 +99,7 @@ def test_radix_tree_02():
     my_key = 'ABC'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Insert second node
     print("*"*10)
@@ -107,8 +107,8 @@ def test_radix_tree_02():
     my_key = 'A'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('ABC')._data == 'ABC'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('ABC').data == 'ABC'
     my_tree.dump()
     # Insert third node
     print("*"*10)
@@ -116,9 +116,9 @@ def test_radix_tree_02():
     my_key = 'AB'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('ABC')._data == 'ABC'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('ABC').data == 'ABC'
     my_tree.dump()
     # Insert same node
     print("*"*10)
@@ -126,7 +126,7 @@ def test_radix_tree_02():
     my_key = 'ABC'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Insert fourth node
     print("*"*10)
@@ -134,10 +134,10 @@ def test_radix_tree_02():
     my_key = 'ABD'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
     my_tree.dump()
     # Insert fifth node
     print("*"*10)
@@ -145,11 +145,11 @@ def test_radix_tree_02():
     my_key = 'ABCD'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
     my_tree.dump()
     # Insert sixth node
     print("*"*10)
@@ -157,12 +157,12 @@ def test_radix_tree_02():
     my_key = 'ACD'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
     my_tree.dump()
     # Insert seventh node
     print("*"*10)
@@ -170,13 +170,13 @@ def test_radix_tree_02():
     my_key = 'ACE'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
     my_tree.dump()
     # Delete seventh node
     print("*"*10)
@@ -186,12 +186,12 @@ def test_radix_tree_02():
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
     assert my_tree.get_node('AC') == None
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
     my_tree.dump()
     # Insert seventh node
     print("*"*10)
@@ -199,13 +199,13 @@ def test_radix_tree_02():
     my_key = 'ACE'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
     my_tree.dump()
     # Insert eighth node
     print("*"*10)
@@ -213,14 +213,14 @@ def test_radix_tree_02():
     my_key = 'AC'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
-    assert my_tree.get_node('ACE')._data == 'ACE'
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
+    assert my_tree.get_node('ACE').data == 'ACE'
     my_tree.dump()
     # Delete seventh node
     print("*"*10)
@@ -229,13 +229,13 @@ def test_radix_tree_02():
     print("%d. Delete node '%s'" %(i,my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node('AC')._data == 'AC'
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABC')._data == 'ABC'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
+    assert my_tree.get_node('AC').data == 'AC'
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABC').data == 'ABC'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
     my_tree.dump()
     # Insert nineth node
     print("*"*10)
@@ -243,7 +243,7 @@ def test_radix_tree_02():
     my_key = 'ABE'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Delete node
     print("*"*10)
@@ -252,12 +252,12 @@ def test_radix_tree_02():
     print("%d. Delete node '%s'" %(i,my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node('AC')._data == 'AC'
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('AB')._data == 'AB'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
+    assert my_tree.get_node('AC').data == 'AC'
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('AB').data == 'AB'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
     my_tree.dump()
     # Delete node
     print("*"*10)
@@ -266,11 +266,11 @@ def test_radix_tree_02():
     print("%d. Delete node '%s'" %(i,my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node('AC')._data == 'AC'
-    assert my_tree.get_node('A')._data == 'A'
-    assert my_tree.get_node('ABD')._data == 'ABD'
-    assert my_tree.get_node('ABCD')._data == 'ABCD'
-    assert my_tree.get_node('ACD')._data == 'ACD'
+    assert my_tree.get_node('AC').data == 'AC'
+    assert my_tree.get_node('A').data == 'A'
+    assert my_tree.get_node('ABD').data == 'ABD'
+    assert my_tree.get_node('ABCD').data == 'ABCD'
+    assert my_tree.get_node('ACD').data == 'ACD'
     my_tree.dump()
 
 def test_radix_tree_03():
@@ -284,7 +284,7 @@ def test_radix_tree_03():
     my_data = '192.168.1.1'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_data)
-    assert my_tree.get_node(my_key)._data == my_data
+    assert my_tree.get_node(my_key).data == my_data
     my_tree.dump()
     # Insert second node
     print("*" * 10)
@@ -293,8 +293,8 @@ def test_radix_tree_03():
     my_data = '192.168.1.2'
     print("%d. Insert node '%s'" % (i, my_key))
     my_tree.insert_node(my_key, my_data)
-    assert my_tree.get_node(my_key)._data == my_data
-    assert my_tree.get_node(0xC0A80101)._data == '192.168.1.1'
+    assert my_tree.get_node(my_key).data == my_data
+    assert my_tree.get_node(0xC0A80101).data == '192.168.1.1'
     my_tree.dump()
     # Delete first node
     print("*" * 10)
@@ -303,7 +303,7 @@ def test_radix_tree_03():
     print("%d. Delete node '%s'" % (i, my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node(0xC0A80102)._data == '192.168.1.2'
+    assert my_tree.get_node(0xC0A80102).data == '192.168.1.2'
     my_tree.dump()
 
 def test_radix_tree_04():
@@ -316,7 +316,7 @@ def test_radix_tree_04():
     my_key = 'ABC'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Delete inexistent node
     print("*"*10)
@@ -340,7 +340,7 @@ def test_radix_tree_04():
     my_key = 'ABD'
     print("%d. Insert node '%s'" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump()
     # Delete inexistent node
     print("*"*10)
@@ -386,7 +386,7 @@ def test_radix_tree_05():
     my_key = bytes.fromhex('0A')
     print("%d. Insert node %s" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump(print_hex=True)
     # Insert first node
     print("*"*10)
@@ -394,7 +394,7 @@ def test_radix_tree_05():
     my_key = bytes.fromhex('0A')
     print("%d. Insert node %s" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(my_key).data == my_key
     my_tree.dump(print_hex=True)
     # Insert second node
     print("*"*10)
@@ -402,8 +402,8 @@ def test_radix_tree_05():
     my_key = bytes.fromhex('0A0B')
     print("%d. Insert node %s" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node(bytes.fromhex('0A')).data == bytes.fromhex('0A')
     my_tree.dump(print_hex=True)
     # Insert third node
     print("*"*10)
@@ -411,9 +411,9 @@ def test_radix_tree_05():
     my_key = bytes.fromhex('AB')
     print("%d. Insert node %s" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
-    assert my_tree.get_node(my_key)._data == my_key
-    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
-    assert my_tree.get_node(bytes.fromhex('0A0B'))._data == bytes.fromhex('0A0B')
+    assert my_tree.get_node(my_key).data == my_key
+    assert my_tree.get_node(bytes.fromhex('0A')).data == bytes.fromhex('0A')
+    assert my_tree.get_node(bytes.fromhex('0A0B')).data == bytes.fromhex('0A0B')
     my_tree.dump(print_hex=True)
     # Delete third node
     print("*"*10)
@@ -422,8 +422,8 @@ def test_radix_tree_05():
     print("%d. Delete node %s" %(i,my_key))
     assert my_tree.delete_node(my_key) == True
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
-    assert my_tree.get_node(bytes.fromhex('0A0B'))._data == bytes.fromhex('0A0B')
+    assert my_tree.get_node(bytes.fromhex('0A')).data == bytes.fromhex('0A')
+    assert my_tree.get_node(bytes.fromhex('0A0B')).data == bytes.fromhex('0A0B')
     my_tree.dump(print_hex=True)
     # Delete second node
     print("*"*10)
@@ -432,7 +432,7 @@ def test_radix_tree_05():
     print("%d. Delete node %s" %(i,my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
+    assert my_tree.get_node(bytes.fromhex('0A')).data == bytes.fromhex('0A')
     my_tree.dump(print_hex=True)
     # Delete First node
     print("*"*10)

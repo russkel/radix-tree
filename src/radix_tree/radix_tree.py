@@ -1,42 +1,41 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional
+from typing import Optional, Dict, Any
+from dataclasses import dataclass, field
 from radix_tree.radix_config import my_logger
 
-class Container(object):
+@dataclass
+class Container:
     """
     Container populated with data linked to a radic node
     """
-
-    def __init__(self, data, tag=None):
-        self._data = data
-        self._tag = tag
-        self._previous = None
-        self._next = None
+    data: Any
+    tag: Any = None
+    previous: Optional['Container'] = None
+    next: Optional['Container'] = None
 
     def __str__(self):
-        return ("Container -> data: %s tag: %s" % (self._data, self._tag))
+        return ("Container -> data: %s tag: %s" % (self.data, self.tag))
 
 
-class Node(object):
+@dataclass
+class Node:
     """
-     A radix node
-     """
-
-    def __init__(self, key, key_size, cont=None):
-        self._next = {}
-        self._key = key
-        self._key_size = key_size
-        self._data = cont
+    A radix node
+    """
+    key: Any
+    key_size: int
+    data: Optional[Container] = None
+    next: Dict = field(default_factory=dict)
 
     def __str__(self):
         p = hex(id(self))
-        if self._data:
-            return ("Node %s -> key: %s (%s) key_size: %d _next: %s _data %s" % (
-            p, self._key[0:self._key_size], self._key[self._key_size + 1:], self._key_size, self._next, self._data))
+        if self.data:
+            return ("Node %s -> key: %s (%s) key_size: %d next: %s data %s" % (
+            p, self.key[0:self.key_size], self.key[self.key_size + 1:], self.key_size, self.next, self.data))
         else:
-            return ("Node %s -> key: %s (%s) key_size: %d _next: %s" % (
-            p, self._key[0:self._key_size], self._key[self._key_size + 1:], self._key_size, self._next))
+            return ("Node %s -> key: %s (%s) key_size: %d next: %s" % (
+            p, self.key[0:self.key_size], self.key[self.key_size + 1:], self.key_size, self.next))
 
 class RadixTree(object):
     """
@@ -75,13 +74,13 @@ class RadixTree(object):
             """ the radix tree is empty """
             my_logger.debug("Radix tree empty")
             cont = Container(data=val, tag=0)
-            node = Node(key, len(key), cont)
+            node = Node(key=key, key_size=len(key), data=cont)
             self._tree = node
             my_logger.debug(node)
             return cont
 
         tested = 0
-        while tested < current._key_size:
+        while tested < current.key_size:
             if tested > len(key) - 1:
                 #  Example
                 #  key to insert AB
@@ -99,21 +98,21 @@ class RadixTree(object):
                 #  ┗━━━━━━━━━━━━┛  ┗━━━━━━━━━━━━┛  ┗━━━━━━━━━━━━┛
 
                 cont = Container(data=val, tag=0)
-                node1 = Node(current._key, current._key_size, None)
-                node1._next = current._next.copy()
-                node1._data = current._data
+                node1 = Node(key=current.key, key_size=current.key_size, data=None)
+                node1.next = current.next.copy()
+                node1.data = current.data
 
-                current._key_size = len(key)
-                current._next[current._key[tested]] = node1
-                current._key = key
-                current._data = cont
+                current.key_size = len(key)
+                current.next[current.key[tested]] = node1
+                current.key = key
+                current.data = cont
 
                 my_logger.debug(current)
                 my_logger.debug(node1)
 
                 return cont
 
-            elif current._key[tested] != key[tested]:
+            elif current.key[tested] != key[tested]:
                 """
                 Creation of two new nodes and one container for data
                 """
@@ -137,19 +136,19 @@ class RadixTree(object):
                 #                  ┃ len=2      ┃
                 #                  ┗━━━━━━━━━━━━┛
                 cont = Container(data=val, tag=0)
-                node1 = Node(current._key, current._key_size, None)
-                node1._next = current._next.copy()
-                node1._data = current._data
-                node2 = Node(key, len(key), cont)
+                node1 = Node(key=current.key, key_size=current.key_size, data=None)
+                node1.next = current.next.copy()
+                node1.data = current.data
+                node2 = Node(key=key, key_size=len(key), data=cont)
 
-                current._key_size = tested
-                # for k in current._next:
-                #    del current._next[k]
-                current._next = {}
-                current._next[current._key[tested]] = node1
-                current._next[key[tested]] = node2
-                current._key = key[0:tested]
-                current._data = None
+                current.key_size = tested
+                # for k in current.next:
+                #    del current.next[k]
+                current.next = {}
+                current.next[current.key[tested]] = node1
+                current.next[key[tested]] = node2
+                current.key = key[0:tested]
+                current.data = None
 
                 my_logger.debug(current)
                 my_logger.debug(node1)
@@ -158,13 +157,13 @@ class RadixTree(object):
                 return cont
             tested += 1
 
-        if tested == current._key_size:
+        if tested == current.key_size:
             if tested < len(key):
                 """Go to the next node"""
-                if key[tested] in current._next:
-                    current = current._next[key[tested]]
+                if key[tested] in current.next:
+                    current = current.next[key[tested]]
                     my_logger.debug("Go to the next node: %s" % current)
-                    self.insert_node(key, val, current)
+                    return self.insert_node(key, val, current)
                 else:
                     """Create the new node"""
                     #  Example
@@ -188,26 +187,26 @@ class RadixTree(object):
                     #                  ┗━━━━━━━━━━━━┛
 
                     cont = Container(data=val, tag=0)
-                    node = Node(key, len(key), cont)
-                    current._next[key[tested]] = node
+                    node = Node(key=key, key_size=len(key), data=cont)
+                    current.next[key[tested]] = node
                     my_logger.debug("Create the next node: %s" % node)
                     my_logger.debug("Modify the current node: %s" % current)
                     return cont
             else:
                 """The leaf already exists, we have to update container"""
                 my_logger.debug("The leaf already exists, we have to update container node: %s" % current)
-                current._key = key
-                current._key_size = len(key)
-                cont = current._data
+                current.key = key
+                current.key_size = len(key)
+                cont = current.data
                 if cont:
                     """Update container"""
-                    cont._data = val
+                    cont.data = val
                     my_logger.debug("Node already exist. Update container: %s" % current)
                 else:
                     """Create container"""
                     my_logger.debug("Node already exist. Create container: %s" % current)
                     cont = Container(data=val, tag=0)
-                    current._data = cont
+                    current.data = cont
                 return cont
 
     def get_node(self, key, start_node=None):
@@ -230,29 +229,29 @@ class RadixTree(object):
 
         if node:
             my_logger.info("Current node: %s" % node)
-            if node._key == key and node._key_size == len(node._key):
-                my_logger.info("Node found -> key: %s key_size: %d data: %s" % (node._key, node._key_size, node._data))
-                return node._data
+            if node.key == key and node.key_size == len(node.key):
+                my_logger.info("Node found -> key: %s key_size: %d data: %s" % (node.key, node.key_size, node.data))
+                return node.data
             else:
                 tested = 0
-                while tested < node._key_size:
+                while tested < node.key_size:
                     if tested > len(key) - 1:
                         my_logger.warning("Node not found -> key: %s" % key)
                         return None
                     else:
                         my_logger.debug("Searching node... current node: %s " % node)
                         my_logger.debug(
-                            "Searching node... index: %d tested: %s - %s" % (tested, node._key[tested], key[tested]))
-                        if node._key[tested] != key[tested]:
+                            "Searching node... index: %d tested: %s - %s" % (tested, node.key[tested], key[tested]))
+                        if node.key[tested] != key[tested]:
                             my_logger.warning("Node not found -> key: %s" % key)
                             return None
                         else:
                             tested += 1
 
-                if tested == node._key_size:
-                    if key[tested] in node._next:
-                        node = node._next[key[tested]]
-                        my_logger.info("2 Go to the next node -> next: %s node: %s" % (node._key[tested], node))
+                if tested == node.key_size:
+                    if key[tested] in node.next:
+                        node = node.next[key[tested]]
+                        my_logger.info("2 Go to the next node -> next: %s node: %s" % (node.key[tested], node))
                         return self.get_node(key, node)
                     else:
                         my_logger.warning("Node not found -> key: %s" % key)
@@ -283,10 +282,10 @@ class RadixTree(object):
         my_logger.info("Current node -> %s" % node)
 
         if node:
-            if node._key == key:
+            if node.key == key:
                 # Node to delete found
                 my_logger.debug("Node to delete found -> %s" % node)
-                if len(node._next) == 0:
+                if len(node.next) == 0:
                     if prev_node == None:
                         my_logger.debug("First node of tree deleted -> Radix tree empty")
                         del self._tree
@@ -309,10 +308,10 @@ class RadixTree(object):
 
                         my_logger.debug("Node deleted %s " % node)
                         my_logger.debug("Previous link deleted %s " % prev_node)
-                        del prev_node._next[node._key[prev_node._key_size]]
+                        del prev_node.next[node.key[prev_node.key_size]]
                         my_logger.debug("1. Previous node updated %s " % prev_node)
 
-                        if len(prev_node._next) == 1 and prev_node._data == None:
+                        if len(prev_node.next) == 1 and prev_node.data == None:
                             # Example
                             # Delete 'ABB'
                             # ┏━━━━━━━━━━━━┓A ┏━━━━━━━━━┓
@@ -331,18 +330,16 @@ class RadixTree(object):
                             # ┃ key=ABA    ┃
                             # ┃ len=3      ┃
                             # ┗━━━━━━━━━━━━┛
-                            for k in prev_node._next:
-                                prev_node._key = prev_node._next[k]._key
-                                prev_node._key_size = prev_node._next[k]._key_size
-                                prev_node._data = prev_node._next[k]._data
-                                prev_node._next = prev_node._next[k]._next
+                            for k in prev_node.next:
+                                prev_node.key = prev_node.next[k].key
+                                prev_node.key_size = prev_node.next[k].key_size
+                                prev_node.data = prev_node.next[k].data
+                                prev_node.next = prev_node.next[k].next
                                 my_logger.debug("2. Previous node updated %s " % prev_node)
 
-                        del node._data
-                        del node
                         return True
                 else:
-                    if len(node._next) == 1:
+                    if len(node.next) == 1:
                         # Example
                         # Delete 'ABA'
                         # ┏━━━━━━━━━━━━┓A ┏━━━━━━━━━━━━┓B ┏━━━━━━━━━━━━┓
@@ -356,17 +353,15 @@ class RadixTree(object):
                         # ┃ key=AB     ┃  ┃ key=ABAB   ┃
                         # ┃ len=2      ┃  ┃ len=4      ┃
                         # ┗━━━━━━━━━━━━┛  ┗━━━━━━━━━━━━┛
-                        for ke in node._next:
-                            next_node = node._next[ke]
+                        for ke in node.next:
+                            next_node = node.next[ke]
                         my_logger.info("Node to update %s " % node)
-                        node._key = next_node._key
-                        node._key_size = next_node._key_size
-                        node._data = next_node._data
-                        node._next = next_node._next.copy()
+                        node.key = next_node.key
+                        node.key_size = next_node.key_size
+                        node.data = next_node.data
+                        node.next = next_node.next.copy()
                         my_logger.info("Node updated %s " % node)
                         my_logger.info("Node deleted %s " % next_node)
-                        del next_node._data
-                        del next_node
                         return True
                     else:
                         # Example
@@ -393,32 +388,31 @@ class RadixTree(object):
                         #                                 ┃ len=4      ┃
                         #                                 ┗━━━━━━━━━━━━┛
                         # In this case, just delete data linked to the node
-                        del node._data
-                        node._data = None
+                        node.data = None
                         my_logger.info("Just delete data linked to the node %s " % node)
                         return True
             else:
                 # Other node case
                 tested = 0
-                while tested < node._key_size:
+                while tested < node.key_size:
                     if tested > len(key) - 1:
                         my_logger.warning("Node not found -> key: %s" % key)
                         return False
                     else:
                         my_logger.debug("Searching node... current node: %s " % node)
                         my_logger.debug(
-                            "Searching node... index: %d tested: %s - %s" % (tested, node._key[tested], key[tested]))
-                        if node._key[tested] != key[tested]:
+                            "Searching node... index: %d tested: %s - %s" % (tested, node.key[tested], key[tested]))
+                        if node.key[tested] != key[tested]:
                             my_logger.warning("Node not found -> key: %s" % key)
                             return False
                         else:
                             tested += 1
 
-                if tested == node._key_size:
-                    if key[tested] in node._next:
+                if tested == node.key_size:
+                    if key[tested] in node.next:
                         prev_node = node
-                        node = node._next[key[tested]]
-                        my_logger.info("Go to the next node -> next: %s node: %s" % (node._key[tested], node))
+                        node = node.next[key[tested]]
+                        my_logger.info("Go to the next node -> next: %s node: %s" % (node.key[tested], node))
                         ret = self.delete_node(key, node, prev_node)
                         return ret
                     else:
@@ -444,41 +438,41 @@ class RadixTree(object):
             if not node:
                 print("Radix tree empty")
                 return
-            if node._data:
+            if node.data:
                 line = "■"
             else:
                 line = "□"
-            key = node._key if not print_hex or type(node._key) is str else bytes(node._key).hex()
-            line += " key: %s key_len: %d next: %d" % (key, node._key_size, len(node._next))
-            if node._data:
-                line += " data: %s" % node._data
+            key = node.key if not print_hex or type(node.key) is str else bytes(node.key).hex()
+            line += " key: %s key_len: %d next: %d" % (key, node.key_size, len(node.next))
+            if node.data:
+                line += " data: %s" % node.data
             print(line)
-            cpt = len(node._next) - 1
+            cpt = len(node.next) - 1
             st_next_line = "│" * cpt
-            for item in node._next:
-                self.dump(node._next[item], st_next_line, print_hex)
+            for item in node.next:
+                self.dump(node.next[item], st_next_line, print_hex)
                 cpt -= 1
                 st_next_line = st_next_line[0:cpt]
         else:
             """Intermediate node"""
             line = st_next_line
-            if node._data:
+            if node.data:
                 line += "└■"
             else:
                 line += "└□"
-            key = node._key if not print_hex or type(node._key) is str else bytes(node._key).hex()
-            line += " key: %s key_len: %d next: %d" % (key, node._key_size, len(node._next))
-            if node._data:
-                line += " data: %s" % node._data
+            key = node.key if not print_hex or type(node.key) is str else bytes(node.key).hex()
+            line += " key: %s key_len: %d next: %d" % (key, node.key_size, len(node.next))
+            if node.data:
+                line += " data: %s" % node.data
             print(line)
-            cpt = len(node._next) - 1
+            cpt = len(node.next) - 1
             if cpt > 1:
                 st_next_line = st_next_line + " │" + "│" * (cpt - 1)
             if cpt == 1:
                 my_logger.debug("node with only one son: %s" % node)
                 st_next_line = st_next_line + " │"
 
-            for item in node._next:
-                self.dump(node._next[item], st_next_line, print_hex)
+            for item in node.next:
+                self.dump(node.next[item], st_next_line, print_hex)
                 l = len(st_next_line) - 1
                 st_next_line = st_next_line[0:l]
