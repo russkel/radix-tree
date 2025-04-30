@@ -7,10 +7,12 @@
 
 **Table of Contents**
 
-- [Installation](#installation)
-- [What is radix tree ?](#what_is_radix_tree)
-- [Getting started](#Getting_started)
-- [License](#license)
+- [radix-tree](#radix-tree)
+  - [Installation](#installation)
+  - [What\_is\_radix\_tree](#what_is_radix_tree)
+  - [Getting\_started](#getting_started)
+  - [Debug](#debug)
+  - [License](#license)
 
 ## Installation
 
@@ -20,7 +22,7 @@ pip install radix-tree
 ## What_is_radix_tree
 A radix tree is a specialized data structure used to store a 
 set of data indexed by strings. These can be strings of 
-characters, bits or any lexicographically ordered objects.
+characters, bytes, bits or any lexicographically ordered objects.
 
 Radix tree are useful for building associative arrays with 
 string keys. In particular, they are very efficient to store 

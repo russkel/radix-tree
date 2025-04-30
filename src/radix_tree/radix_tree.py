@@ -64,7 +64,7 @@ class RadixTree(object):
         my_logger.debug(" RadixTree.insert_node() ".center(60, '-'))
         my_logger.debug(" key: %s " % key)
 
-        if type(key) != str:
+        if type(key) not in [str, bytes, bytearray]:
             key = bin(key).replace('0b', '')
             my_logger.debug("Key converted in string key: %s " % key)
 
@@ -224,7 +224,7 @@ class RadixTree(object):
 
         my_logger.debug(" RadixTree.get_node() ".center(60, '-'))
 
-        if type(key) != str:
+        if type(key) not in [str, bytes, bytearray]:
             key = bin(key).replace('0b', '')
             my_logger.debug("Key converted in string key: %s " % key)
 
@@ -279,7 +279,7 @@ class RadixTree(object):
 
         my_logger.debug(" RadixTree.delete_node() ".center(60, '-'))
 
-        if type(key) != str:
+        if type(key) not in [str, bytes, bytearray]:
             key = bin(key).replace('0b', '')
             my_logger.debug("Key converted in string key: %s " % key)
 

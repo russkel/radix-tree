@@ -376,12 +376,78 @@ def test_radix_tree_04():
     my_tree.dump()
 
 
+def test_radix_tree_05():
+    # Radix Tree creation with bytes key
+    # Creation of empty radix tree
+    my_tree = RadixTree()
+    # Insert first node
+    print("*"*10)
+    i = 1
+    my_key = bytes.fromhex('0A')
+    print("%d. Insert node %s" %(i,my_key))
+    my_tree.insert_node(my_key,my_key)
+    assert my_tree.get_node(my_key)._data == my_key
+    my_tree.dump()
+    # Insert first node
+    print("*"*10)
+    i += 1
+    my_key = bytes.fromhex('0A')
+    print("%d. Insert node %s" %(i,my_key))
+    my_tree.insert_node(my_key,my_key)
+    assert my_tree.get_node(my_key)._data == my_key
+    my_tree.dump()
+    # Insert second node
+    print("*"*10)
+    i += 1
+    my_key = bytes.fromhex('0A0B')
+    print("%d. Insert node %s" %(i,my_key))
+    my_tree.insert_node(my_key,my_key)
+    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
+    my_tree.dump()
+    # Insert third node
+    print("*"*10)
+    i += 1
+    my_key = bytes.fromhex('AB')
+    print("%d. Insert node %s" %(i,my_key))
+    my_tree.insert_node(my_key,my_key)
+    assert my_tree.get_node(my_key)._data == my_key
+    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
+    assert my_tree.get_node(bytes.fromhex('0A0B'))._data == bytes.fromhex('0A0B')
+    my_tree.dump()
+    # Delete third node
+    print("*"*10)
+    i += 1
+    my_key = bytes.fromhex('AB')
+    print("%d. Delete node %s" %(i,my_key))
+    assert my_tree.delete_node(my_key) == True
+    assert my_tree.get_node(my_key) == None
+    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
+    assert my_tree.get_node(bytes.fromhex('0A0B'))._data == bytes.fromhex('0A0B')
+    my_tree.dump()
+    # Delete second node
+    print("*"*10)
+    i += 1
+    my_key = bytes.fromhex('0A0B')
+    print("%d. Delete node %s" %(i,my_key))
+    my_tree.delete_node(my_key)
+    assert my_tree.get_node(my_key) == None
+    assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
+    my_tree.dump()
+    # Delete First node
+    print("*"*10)
+    i += 1
+    my_key = bytes.fromhex('0A')
+    print("%d. Delete node %s" %(i,my_key))
+    my_tree.delete_node(my_key)
+    assert my_tree.get_node(my_key) == None
+    my_tree.dump()
+
+
 if __name__ == "__main__":
     test_radix_tree_00()
     test_radix_tree_01()
     test_radix_tree_02()
     test_radix_tree_03()
     test_radix_tree_04()
-
-
-
+    test_radix_tree_05()
