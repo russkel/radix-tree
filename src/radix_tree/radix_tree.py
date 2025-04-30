@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 
-###################################################################
-# run tests from Pycharms locally                                ##
-#from radix_config import my_logger                              ##
-#                                                                ##
-# run tests from external Testpy as distributed package          ##
+from typing import Optional
 from radix_tree.radix_config import my_logger
-#                                                                ##
-###################################################################
 
 class Container(object):
     """
@@ -49,10 +43,15 @@ class RadixTree(object):
     A radix tree
     """
 
-    #    max_key_len = 0
-
     def __init__(self):
         self._tree = None
+
+    def root_node(self) -> Optional[Node]:
+        """
+        Return the root node of the radix tree
+        :return: root node
+        """
+        return self._tree
 
     def insert_node(self, key, val, start_node=None):
         """
@@ -68,10 +67,7 @@ class RadixTree(object):
             key = bin(key).replace('0b', '')
             my_logger.debug("Key converted in string key: %s " % key)
 
-        if start_node == None:
-            current = self._tree
-        else:
-            current = start_node
+        current = start_node if start_node else self.root_node()
 
         my_logger.info("Current node: %s " % current)
 
@@ -230,10 +226,7 @@ class RadixTree(object):
 
         my_logger.debug("key: %s" % key)
 
-        if start_node == None:
-            node = self._tree
-        else:
-            node = start_node
+        node = start_node if start_node else self.root_node()
 
         if node:
             my_logger.info("Current node: %s" % node)
@@ -285,10 +278,7 @@ class RadixTree(object):
 
         my_logger.debug(" Key : %s" % key)
 
-        if start_node == None:
-            node = self._tree
-        else:
-            node = start_node
+        node = start_node if start_node else self.root_node()
 
         my_logger.info("Current node -> %s" % node)
 
@@ -450,7 +440,7 @@ class RadixTree(object):
 
         if not node:
             """Dump the entire radix tree"""
-            node = self._tree
+            node = self.root_node()
             if not node:
                 print("Radix tree empty")
                 return
