@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Union
 from dataclasses import dataclass, field
 from radix_tree.radix_config import my_logger
+
+# Define key types
+KeyType = Union[str, bytes, bytearray, int]
 
 @dataclass
 class Container:
@@ -14,7 +17,7 @@ class Container:
     previous: Optional['Container'] = None
     next: Optional['Container'] = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return ("Container -> data: %s tag: %s" % (self.data, self.tag))
 
 
@@ -26,9 +29,9 @@ class Node:
     key: Any
     key_size: int
     data: Optional[Container] = None
-    next: Dict = field(default_factory=dict)
+    next: Dict[Any, 'Node'] = field(default_factory=dict)
 
-    def __str__(self):
+    def __str__(self) -> str:
         p = hex(id(self))
         if self.data:
             return ("Node %s -> key: %s (%s) key_size: %d next: %s data %s" % (
@@ -42,8 +45,8 @@ class RadixTree(object):
     A radix tree
     """
 
-    def __init__(self):
-        self._tree = None
+    def __init__(self) -> None:
+        self._tree: Optional[Node] = None
 
     def root_node(self) -> Optional[Node]:
         """
@@ -52,12 +55,13 @@ class RadixTree(object):
         """
         return self._tree
 
-    def insert_node(self, key, val, start_node=None):
+    def insert_node(self, key: KeyType, val: Any, start_node: Optional[Node] = None) -> Container:
         """
         Insert a node in radix tree with a string key
         :param key: string or int key
         :param val: data linked to the node
-        :return: new node created
+        :param start_node: optional starting node for recursion
+        :return: new container created
         """
         my_logger.debug(" RadixTree.insert_node() ".center(60, '-'))
         my_logger.debug(" key: %s " % key)
@@ -209,7 +213,7 @@ class RadixTree(object):
                     current.data = cont
                 return cont
 
-    def get_node(self, key, start_node=None):
+    def get_node(self, key: KeyType, start_node: Optional[Node] = None) -> Optional[Container]:
         """
         Get node in the radix tree beginning to <start_node> indexed by <key>
         :param start_node: first node of the radix tree to explore
@@ -260,7 +264,7 @@ class RadixTree(object):
             my_logger.info("Radix tree empty")
             return None
 
-    def delete_node(self, key, start_node=None, prev_node=None):
+    def delete_node(self, key: KeyType, start_node: Optional[Node] = None, prev_node: Optional[Node] = None) -> bool:
         """
         Delete node in radix tree
         :param key: key of the node to delete
@@ -422,11 +426,12 @@ class RadixTree(object):
             my_logger.info("Radix tree empty")
             return False
 
-    def dump(self, node=None, st_next_line='', print_hex=False):
+    def dump(self, node: Optional[Node] = None, st_next_line: str = '', print_hex: bool = False) -> None:
         """
         Display a radix node
         :param node: first node of the radix tree. If node = None dump the entire radix tree
         :param st_next_line: start of next line to display
+        :param print_hex: whether to print binary data as hex
         :return: None
         """
 
