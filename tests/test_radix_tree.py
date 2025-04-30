@@ -387,7 +387,7 @@ def test_radix_tree_05():
     print("%d. Insert node %s" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
     assert my_tree.get_node(my_key)._data == my_key
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
     # Insert first node
     print("*"*10)
     i += 1
@@ -395,7 +395,7 @@ def test_radix_tree_05():
     print("%d. Insert node %s" %(i,my_key))
     my_tree.insert_node(my_key,my_key)
     assert my_tree.get_node(my_key)._data == my_key
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
     # Insert second node
     print("*"*10)
     i += 1
@@ -404,7 +404,7 @@ def test_radix_tree_05():
     my_tree.insert_node(my_key,my_key)
     assert my_tree.get_node(my_key)._data == my_key
     assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
     # Insert third node
     print("*"*10)
     i += 1
@@ -414,7 +414,7 @@ def test_radix_tree_05():
     assert my_tree.get_node(my_key)._data == my_key
     assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
     assert my_tree.get_node(bytes.fromhex('0A0B'))._data == bytes.fromhex('0A0B')
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
     # Delete third node
     print("*"*10)
     i += 1
@@ -424,7 +424,7 @@ def test_radix_tree_05():
     assert my_tree.get_node(my_key) == None
     assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
     assert my_tree.get_node(bytes.fromhex('0A0B'))._data == bytes.fromhex('0A0B')
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
     # Delete second node
     print("*"*10)
     i += 1
@@ -433,7 +433,7 @@ def test_radix_tree_05():
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
     assert my_tree.get_node(bytes.fromhex('0A'))._data == bytes.fromhex('0A')
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
     # Delete First node
     print("*"*10)
     i += 1
@@ -441,7 +441,7 @@ def test_radix_tree_05():
     print("%d. Delete node %s" %(i,my_key))
     my_tree.delete_node(my_key)
     assert my_tree.get_node(my_key) == None
-    my_tree.dump()
+    my_tree.dump(print_hex=True)
 
 
 if __name__ == "__main__":

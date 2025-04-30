@@ -438,7 +438,7 @@ class RadixTree(object):
             my_logger.info("Radix tree empty")
             return False
 
-    def dump(self, node=None, st_next_line=''):
+    def dump(self, node=None, st_next_line='', print_hex=False):
         """
         Display a radix node
         :param node: first node of the radix tree. If node = None dump the entire radix tree
@@ -458,14 +458,15 @@ class RadixTree(object):
                 line = "■"
             else:
                 line = "□"
-            line += " key: %s key_len: %d next: %d" % (node._key, node._key_size, len(node._next))
+            key = node._key if not print_hex or type(node._key) is str else bytes(node._key).hex()
+            line += " key: %s key_len: %d next: %d" % (key, node._key_size, len(node._next))
             if node._data:
                 line += " data: %s" % node._data
             print(line)
             cpt = len(node._next) - 1
             st_next_line = "│" * cpt
             for item in node._next:
-                self.dump(node._next[item], st_next_line)
+                self.dump(node._next[item], st_next_line, print_hex)
                 cpt -= 1
                 st_next_line = st_next_line[0:cpt]
         else:
@@ -475,7 +476,8 @@ class RadixTree(object):
                 line += "└■"
             else:
                 line += "└□"
-            line += " key: %s key_len: %d next: %d" % (node._key, node._key_size, len(node._next))
+            key = node._key if not print_hex or type(node._key) is str else bytes(node._key).hex()
+            line += " key: %s key_len: %d next: %d" % (key, node._key_size, len(node._next))
             if node._data:
                 line += " data: %s" % node._data
             print(line)
@@ -487,6 +489,6 @@ class RadixTree(object):
                 st_next_line = st_next_line + " │"
 
             for item in node._next:
-                self.dump(node._next[item], st_next_line)
+                self.dump(node._next[item], st_next_line, print_hex)
                 l = len(st_next_line) - 1
                 st_next_line = st_next_line[0:l]
